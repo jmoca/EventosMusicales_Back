@@ -30,4 +30,6 @@ public class EntradaService {
     public void deleteEntrada(String id) {
         entradaRepository.deleteById(id);
     }
+
+
 }

@@ -44,4 +44,5 @@ public class EntradaController {
         entradaService.deleteEntrada(id);
         return ResponseEntity.noContent().build();
     }
+
 }

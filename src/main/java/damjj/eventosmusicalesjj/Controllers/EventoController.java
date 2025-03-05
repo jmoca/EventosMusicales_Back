@@ -44,4 +44,10 @@ public class EventoController {
         eventoService.deleteEvento(id);
         return ResponseEntity.noContent().build();
     }
+    //Consultar la cantidad de entradas vendidas para un evento
+    @GetMapping("/eventos/{eventoId}/entradas-vendidas")
+    public ResponseEntity<Long> getEntradasVendidas(@PathVariable String eventoId) {
+        long cantidadVendida = eventoService.getEntradasVendidasPorEvento(eventoId);
+        return ResponseEntity.ok(cantidadVendida);
+    }
 }

@@ -2,6 +2,8 @@ package damjj.eventosmusicalesjj.Controllers;
 
 import damjj.eventosmusicalesjj.Entities.Artista;
 import damjj.eventosmusicalesjj.Services.ArtistaService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,22 +19,29 @@ public class ArtistaController {
     }
 
     @GetMapping
-    public List<Artista> getAllArtistas() {
-        return artistaService.getAllArtistas();
+    public ResponseEntity<List<Artista>> getAllArtistas() {
+        List<Artista> artistas = artistaService.getAllArtistas();
+        if (artistas.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(artistas);
     }
 
     @GetMapping("/{id}")
-    public Optional<Artista> getArtistaById(@PathVariable String id) {
-        return artistaService.getArtistaById(id);
+    public ResponseEntity<Artista> getArtistaById(@PathVariable String id) {
+        Optional<Artista> artista = artistaService.getArtistaById(id);
+        return artista.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public Artista saveArtista(@RequestBody Artista artista) {
-        return artistaService.saveArtista(artista);
+    public ResponseEntity<Artista> saveArtista(@RequestBody Artista artista) {
+        Artista nuevoArtista = artistaService.saveArtista(artista);
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevoArtista);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteArtista(@PathVariable String id) {
+    public ResponseEntity<Void> deleteArtista(@PathVariable String id) {
         artistaService.deleteArtista(id);
+        return ResponseEntity.noContent().build();
     }
 }
